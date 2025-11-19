@@ -7,7 +7,7 @@ import { CartIcon } from './icons';
 // import { profile } from 'console';
 
 const Navbar: React.FC = () => {
-  const { user, profile, signOut, setSession, setProfile, setUser } = useAuth();
+  const { user, profile, signOut } = useAuth();
   const { itemCount } = useCart();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -18,22 +18,8 @@ const Navbar: React.FC = () => {
   // };
 
 const handleSignOut = async () => {
-  try {
-    // Supabase logout
-    await signOut();
-  } catch (error: any) {
-    console.warn('Supabase signOut failed:', error.message);
-  } finally {
-    // Clear local state manually (these come from your AuthContext)
-    setSession(null);
-    setProfile(null);
-    setUser(null);
-
-    // Clear storage and refresh
-    localStorage.clear();
-    window.location.reload();
-    navigate('/');
-  }
+  await signOut();
+  navigate('/');
 };
 
   return (
@@ -124,6 +110,9 @@ const handleSignOut = async () => {
             )}
             {profile?.role === 'school_admin' && (
               <Link to="/school-admin" onClick={() => setMobileOpen(false)} className="block px-2 py-2 rounded-md text-gray-700 hover:bg-gray-100">School Portal</Link>
+            )}
+            {profile?.role === 'supplier_admin' && (
+              <Link to="/supplier-admin" onClick={() => setMobileOpen(false)} className="block px-2 py-2 rounded-md text-gray-700 hover:bg-gray-100">Supplier Portal</Link>
             )}
           </div>
           <div className="mt-3 border-t border-gray-200 pt-3">
